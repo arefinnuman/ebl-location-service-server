@@ -17,4 +17,16 @@ router.post(
   EblNetworkController.createSubBranch,
 );
 
+router.post(
+  '/create-agent',
+  validateRequest(EblNetworkValidation.createAgentZodSchema),
+  EblNetworkController.createAgent,
+);
+
+router.post(
+  '/create-365',
+  validateRequest(EblNetworkValidation.create365ZodSchema),
+  EblNetworkController.create365,
+);
+
 export const EblNetworkRoutes = router;

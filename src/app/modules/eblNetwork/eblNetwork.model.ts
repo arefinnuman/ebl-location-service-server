@@ -20,6 +20,14 @@ const EblNetworkSchema = new Schema<IEblNetwork, EblNetworkModel>(
       type: Schema.Types.ObjectId,
       ref: 'EblSubBranch',
     },
+    eblAgent: {
+      type: Schema.Types.ObjectId,
+      ref: 'EblAgent',
+    },
+    ebl365: {
+      type: Schema.Types.ObjectId,
+      ref: 'Ebl365',
+    },
   },
   {
     timestamps: true,

@@ -33,7 +33,35 @@ const createSubBranch: RequestHandler = catchAsync(
   },
 );
 
+const createAgent: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { eblAgent, ...networkData } = req.body;
+    const result = await EblNetworkService.createAgent(eblAgent, networkData);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: `agent created successfully`,
+      data: result,
+    });
+  },
+);
+
+const create365: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { ebl365, ...networkData } = req.body;
+    const result = await EblNetworkService.create365(ebl365, networkData);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: `365 created successfully`,
+      data: result,
+    });
+  },
+);
+
 export const EblNetworkController = {
   createBranch,
   createSubBranch,
+  createAgent,
+  create365,
 };
