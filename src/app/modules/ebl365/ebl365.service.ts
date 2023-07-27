@@ -5,14 +5,14 @@ import { PaginationHelpers } from '../../../helper/paginationHelper';
 import { IGenericResponse } from '../../../interface/genericResponse';
 import { IPaginationOptions } from '../../../interface/pagination';
 import { EblNetwork } from '../eblNetwork/eblNetwork.model';
-import { branchSearchableFields } from './eblBranch.constant';
-import { IBranchFilters, IEblBranch } from './eblBranch.interface';
-import { EblBranch } from './eblBranch.model';
+import { ebl365SearchableFields } from './ebl365.constant ';
+import { IEbl365, IEbl365Filters } from './ebl365.interface';
+import { Ebl365 } from './ebl365.model';
 
-const getAllBranch = async (
-  filters: IBranchFilters,
+const getAllEbl365 = async (
+  filters: IEbl365Filters,
   paginationOptions: IPaginationOptions,
-): Promise<IGenericResponse<IEblBranch[]>> => {
+): Promise<IGenericResponse<IEbl365[]>> => {
   const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     PaginationHelpers.calculatePagination(paginationOptions);
@@ -21,7 +21,7 @@ const getAllBranch = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: branchSearchableFields.map(field => ({
+      $or: ebl365SearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',
@@ -46,12 +46,12 @@ const getAllBranch = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const result = await EblBranch.find(whereConditions)
+  const result = await Ebl365.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
 
-  const total = await EblBranch.countDocuments(whereConditions);
+  const total = await Ebl365.countDocuments(whereConditions);
 
   return {
     meta: {
@@ -63,36 +63,32 @@ const getAllBranch = async (
   };
 };
 
-const getSingleBranch = async (id: string): Promise<IEblBranch | null> => {
-  const result = await EblBranch.findOne({ _id: id });
+const getSingleEbl365 = async (id: string): Promise<IEbl365 | null> => {
+  const result = await Ebl365.findOne({ _id: id });
   return result;
 };
 
-const updateBranch = async (
+const updateEbl365 = async (
   id: string,
-  payload: Partial<IEblBranch>,
-): Promise<IEblBranch | null> => {
-  const isExist = await EblBranch.findOne({ _id: id });
+  payload: Partial<IEbl365>,
+): Promise<IEbl365 | null> => {
+  const isExist = await Ebl365.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Branch not found !');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Ebl365 not found !');
   }
-  const { ...BranchData } = payload;
-  const updatedBranchData: Partial<IEblBranch> = { ...BranchData };
+  const { ...ebl365Data } = payload;
+  const updatedEbl365Data: Partial<IEbl365> = { ...ebl365Data };
 
-  const result = await EblBranch.findOneAndUpdate(
-    { _id: id },
-    updatedBranchData,
-    {
-      new: true,
-    },
-  );
+  const result = await Ebl365.findOneAndUpdate({ _id: id }, updatedEbl365Data, {
+    new: true,
+  });
   return result;
 };
 
-const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
-  const isExist = await EblBranch.findOne({ _id: id });
+const deleteEbl365 = async (id: string): Promise<IEbl365 | null> => {
+  const isExist = await Ebl365.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'branch is not found !');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Ebl365 is not found !');
   }
   const networkId = isExist?.networkId;
 
@@ -100,25 +96,25 @@ const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
   try {
     session.startTransaction();
 
-    const Branch = await EblBranch.findOneAndDelete({ networkId });
-    if (!Branch) {
-      throw new ApiError(404, 'failed to delete Branch');
+    const ebl365 = await Ebl365.findOneAndDelete({ networkId });
+    if (!ebl365) {
+      throw new ApiError(404, 'failed to delete Ebl365');
     }
 
     await EblNetwork.deleteOne({ networkId });
     session.commitTransaction();
     session.endSession();
 
-    return Branch;
+    return ebl365;
   } catch (error) {
     session.abortTransaction();
     throw error;
   }
 };
 
-export const EblBranchService = {
-  getAllBranch,
-  getSingleBranch,
-  updateBranch,
-  deleteBranch,
+export const Ebl365Service = {
+  getAllEbl365,
+  getSingleEbl365,
+  updateEbl365,
+  deleteEbl365,
 };

@@ -15,3 +15,12 @@ export type IEblBranch = {
 };
 
 export type EblBranchModel = Model<IEblBranch, Record<string, unknown>>;
+
+export type IBranchFilters = {
+  searchTerm?: string;
+  id?: string;
+  branchName?: string;
+  branchCode?: string;
+  branchDivision?: string;
+  branchAddress?: string;
+};

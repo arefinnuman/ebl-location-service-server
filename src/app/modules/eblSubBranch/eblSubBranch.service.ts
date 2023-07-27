@@ -5,14 +5,14 @@ import { PaginationHelpers } from '../../../helper/paginationHelper';
 import { IGenericResponse } from '../../../interface/genericResponse';
 import { IPaginationOptions } from '../../../interface/pagination';
 import { EblNetwork } from '../eblNetwork/eblNetwork.model';
-import { branchSearchableFields } from './eblBranch.constant';
-import { IBranchFilters, IEblBranch } from './eblBranch.interface';
-import { EblBranch } from './eblBranch.model';
+import { subBranchSearchableFields } from './eblSubBranch.constant';
+import { IEblSubBranch, ISubBranchFilters } from './eblSubBranch.interface';
+import { EblSubBranch } from './eblSubBranch.model';
 
-const getAllBranch = async (
-  filters: IBranchFilters,
+const getAllSubBranch = async (
+  filters: ISubBranchFilters,
   paginationOptions: IPaginationOptions,
-): Promise<IGenericResponse<IEblBranch[]>> => {
+): Promise<IGenericResponse<IEblSubBranch[]>> => {
   const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     PaginationHelpers.calculatePagination(paginationOptions);
@@ -21,7 +21,7 @@ const getAllBranch = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: branchSearchableFields.map(field => ({
+      $or: subBranchSearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',
@@ -46,12 +46,12 @@ const getAllBranch = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const result = await EblBranch.find(whereConditions)
+  const result = await EblSubBranch.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
 
-  const total = await EblBranch.countDocuments(whereConditions);
+  const total = await EblSubBranch.countDocuments(whereConditions);
 
   return {
     meta: {
@@ -63,23 +63,25 @@ const getAllBranch = async (
   };
 };
 
-const getSingleBranch = async (id: string): Promise<IEblBranch | null> => {
-  const result = await EblBranch.findOne({ _id: id });
+const getSingleSubBranch = async (
+  id: string,
+): Promise<IEblSubBranch | null> => {
+  const result = await EblSubBranch.findOne({ _id: id });
   return result;
 };
 
-const updateBranch = async (
+const updateSubBranch = async (
   id: string,
-  payload: Partial<IEblBranch>,
-): Promise<IEblBranch | null> => {
-  const isExist = await EblBranch.findOne({ _id: id });
+  payload: Partial<IEblSubBranch>,
+): Promise<IEblSubBranch | null> => {
+  const isExist = await EblSubBranch.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Branch not found !');
   }
   const { ...BranchData } = payload;
-  const updatedBranchData: Partial<IEblBranch> = { ...BranchData };
+  const updatedBranchData: Partial<IEblSubBranch> = { ...BranchData };
 
-  const result = await EblBranch.findOneAndUpdate(
+  const result = await EblSubBranch.findOneAndUpdate(
     { _id: id },
     updatedBranchData,
     {
@@ -89,8 +91,8 @@ const updateBranch = async (
   return result;
 };
 
-const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
-  const isExist = await EblBranch.findOne({ _id: id });
+const deleteSubBranch = async (id: string): Promise<IEblSubBranch | null> => {
+  const isExist = await EblSubBranch.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'branch is not found !');
   }
@@ -100,7 +102,7 @@ const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
   try {
     session.startTransaction();
 
-    const Branch = await EblBranch.findOneAndDelete({ networkId });
+    const Branch = await EblSubBranch.findOneAndDelete({ networkId });
     if (!Branch) {
       throw new ApiError(404, 'failed to delete Branch');
     }
@@ -116,9 +118,9 @@ const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
   }
 };
 
-export const EblBranchService = {
-  getAllBranch,
-  getSingleBranch,
-  updateBranch,
-  deleteBranch,
+export const EblSubBranchService = {
+  getAllSubBranch,
+  getSingleSubBranch,
+  updateSubBranch,
+  deleteSubBranch,
 };

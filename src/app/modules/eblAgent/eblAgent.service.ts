@@ -5,14 +5,14 @@ import { PaginationHelpers } from '../../../helper/paginationHelper';
 import { IGenericResponse } from '../../../interface/genericResponse';
 import { IPaginationOptions } from '../../../interface/pagination';
 import { EblNetwork } from '../eblNetwork/eblNetwork.model';
-import { branchSearchableFields } from './eblBranch.constant';
-import { IBranchFilters, IEblBranch } from './eblBranch.interface';
-import { EblBranch } from './eblBranch.model';
+import { agentSearchableFields } from './eblAgent.constant';
+import { IAgentFilters, IEblAgent } from './eblAgent.interface';
+import { EblAgent } from './eblAgent.model';
 
-const getAllBranch = async (
-  filters: IBranchFilters,
+const getAllAgent = async (
+  filters: IAgentFilters,
   paginationOptions: IPaginationOptions,
-): Promise<IGenericResponse<IEblBranch[]>> => {
+): Promise<IGenericResponse<IEblAgent[]>> => {
   const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     PaginationHelpers.calculatePagination(paginationOptions);
@@ -21,7 +21,7 @@ const getAllBranch = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: branchSearchableFields.map(field => ({
+      $or: agentSearchableFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',
@@ -46,12 +46,12 @@ const getAllBranch = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const result = await EblBranch.find(whereConditions)
+  const result = await EblAgent.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
 
-  const total = await EblBranch.countDocuments(whereConditions);
+  const total = await EblAgent.countDocuments(whereConditions);
 
   return {
     meta: {
@@ -63,25 +63,25 @@ const getAllBranch = async (
   };
 };
 
-const getSingleBranch = async (id: string): Promise<IEblBranch | null> => {
-  const result = await EblBranch.findOne({ _id: id });
+const getSingleAgent = async (id: string): Promise<IEblAgent | null> => {
+  const result = await EblAgent.findOne({ _id: id });
   return result;
 };
 
-const updateBranch = async (
+const updateAgent = async (
   id: string,
-  payload: Partial<IEblBranch>,
-): Promise<IEblBranch | null> => {
-  const isExist = await EblBranch.findOne({ _id: id });
+  payload: Partial<IEblAgent>,
+): Promise<IEblAgent | null> => {
+  const isExist = await EblAgent.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Branch not found !');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Agent not found !');
   }
-  const { ...BranchData } = payload;
-  const updatedBranchData: Partial<IEblBranch> = { ...BranchData };
+  const { ...AgentData } = payload;
+  const updatedAgentData: Partial<IEblAgent> = { ...AgentData };
 
-  const result = await EblBranch.findOneAndUpdate(
+  const result = await EblAgent.findOneAndUpdate(
     { _id: id },
-    updatedBranchData,
+    updatedAgentData,
     {
       new: true,
     },
@@ -89,10 +89,10 @@ const updateBranch = async (
   return result;
 };
 
-const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
-  const isExist = await EblBranch.findOne({ _id: id });
+const deleteAgent = async (id: string): Promise<IEblAgent | null> => {
+  const isExist = await EblAgent.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'branch is not found !');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Agent is not found !');
   }
   const networkId = isExist?.networkId;
 
@@ -100,25 +100,25 @@ const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
   try {
     session.startTransaction();
 
-    const Branch = await EblBranch.findOneAndDelete({ networkId });
-    if (!Branch) {
-      throw new ApiError(404, 'failed to delete Branch');
+    const Agent = await EblAgent.findOneAndDelete({ networkId });
+    if (!Agent) {
+      throw new ApiError(404, 'failed to delete Agent');
     }
 
     await EblNetwork.deleteOne({ networkId });
     session.commitTransaction();
     session.endSession();
 
-    return Branch;
+    return Agent;
   } catch (error) {
     session.abortTransaction();
     throw error;
   }
 };
 
-export const EblBranchService = {
-  getAllBranch,
-  getSingleBranch,
-  updateBranch,
-  deleteBranch,
+export const EblAgentService = {
+  getAllAgent,
+  getSingleAgent,
+  updateAgent,
+  deleteAgent,
 };

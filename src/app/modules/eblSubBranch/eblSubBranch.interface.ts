@@ -15,3 +15,12 @@ export type IEblSubBranch = {
 };
 
 export type EblSubBranchModel = Model<IEblSubBranch, Record<string, unknown>>;
+
+export type ISubBranchFilters = {
+  searchTerm?: string;
+  id?: string;
+  subBranchName?: string;
+  subBranchCode?: string;
+  subBranchDivision?: string;
+  subBranchAddress?: string;
+};

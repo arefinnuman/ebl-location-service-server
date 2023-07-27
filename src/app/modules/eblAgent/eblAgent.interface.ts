@@ -15,3 +15,12 @@ export type IEblAgent = {
 };
 
 export type EblAgentModel = Model<IEblAgent, Record<string, unknown>>;
+
+export type IAgentFilters = {
+  searchTerm?: string;
+  id?: string;
+  agentName?: string;
+  agentCode?: string;
+  agentDivision?: string;
+  agentAddress?: string;
+};

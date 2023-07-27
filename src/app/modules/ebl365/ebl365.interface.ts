@@ -15,3 +15,12 @@ export type IEbl365 = {
 };
 
 export type Ebl365Model = Model<IEbl365, Record<string, unknown>>;
+
+export type IEbl365Filters = {
+  searchTerm?: string;
+  id?: string;
+  ebl365Name?: string;
+  ebl365Code?: string;
+  ebl365Division?: string;
+  ebl365Address?: string;
+};
