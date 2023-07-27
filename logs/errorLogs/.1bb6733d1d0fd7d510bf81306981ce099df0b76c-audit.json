@@ -1,40 +1,40 @@
 {
-    "keep": {
-        "days": true,
-        "amount": 14
+  "keep": {
+    "days": true,
+    "amount": 14
+  },
+  "auditLog": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\.1bb6733d1d0fd7d510bf81306981ce099df0b76c-audit.json",
+  "files": [
+    {
+      "date": 1690378923103,
+      "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-19_error.log",
+      "hash": "ffd2f34c589af4239b20da4ad692d956f66556ff1c9ea52080623b2c29fbf840"
     },
-    "auditLog": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\.1bb6733d1d0fd7d510bf81306981ce099df0b76c-audit.json",
-    "files": [
-        {
-            "date": 1690378923103,
-            "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-19_error.log",
-            "hash": "ffd2f34c589af4239b20da4ad692d956f66556ff1c9ea52080623b2c29fbf840"
-        },
-        {
-            "date": 1690380006152,
-            "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-20_error.log",
-            "hash": "9a2a81b77396fcf83bc40f324603e809eb4416e3fc206733c39981dab9c680fd"
-        },
-        {
-            "date": 1690384725630,
-            "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-21_error.log",
-            "hash": "21b0212489cc4e6282913973386027c04737707add5c164157a08b5640b79614"
-        },
-        {
-            "date": 1690387387366,
-            "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-22_error.log",
-            "hash": "05687f1b0b984d4fcc840ca8500b95bbac666a31c1814d977503dbd2230d963f"
-        },
-        {
-            "date": 1690430661388,
-            "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-27-10_error.log",
-            "hash": "f7f6ef9714415f492f5ef14ab12e24dd67dafc5357d45a75be008236f6dbb5c6"
-        },
-        {
-            "date": 1690434328012,
-            "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-27-11_error.log",
-            "hash": "fa339188829fccafa9148c35cb418e1abc67e683dc4ffdc743aece215259c132"
-        }
-    ],
-    "hashType": "sha256"
+    {
+      "date": 1690380006152,
+      "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-20_error.log",
+      "hash": "9a2a81b77396fcf83bc40f324603e809eb4416e3fc206733c39981dab9c680fd"
+    },
+    {
+      "date": 1690384725630,
+      "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-21_error.log",
+      "hash": "21b0212489cc4e6282913973386027c04737707add5c164157a08b5640b79614"
+    },
+    {
+      "date": 1690387387366,
+      "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-26-22_error.log",
+      "hash": "05687f1b0b984d4fcc840ca8500b95bbac666a31c1814d977503dbd2230d963f"
+    },
+    {
+      "date": 1690430661388,
+      "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-27-10_error.log",
+      "hash": "f7f6ef9714415f492f5ef14ab12e24dd67dafc5357d45a75be008236f6dbb5c6"
+    },
+    {
+      "date": 1690434328012,
+      "name": "D:\\Full Stack Projects\\Ebl Location Tracking Service\\ebl-location-tracking-service-server\\logs\\errorLogs\\2023-07-27-11_error.log",
+      "hash": "fa339188829fccafa9148c35cb418e1abc67e683dc4ffdc743aece215259c132"
+    }
+  ],
+  "hashType": "sha256"
 }
