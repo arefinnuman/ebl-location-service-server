@@ -17,7 +17,7 @@ const getAllAgent = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEblAgent[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admins retrieved successfully !',
+    message: 'ebl agent retrieved successfully !',
     meta: result.meta,
     data: result.data,
   });
@@ -30,7 +30,7 @@ const getSingleAgent = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEblAgent>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Agent retrieved successfully !',
+    message: 'ebl agent retrieved successfully !',
     data: result,
   });
 });
@@ -44,7 +44,7 @@ const updateAgent = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEblAgent>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Agent updated successfully !',
+    message: 'ebl agent updated successfully !',
     data: result,
   });
 });
@@ -56,7 +56,7 @@ const deleteAgent = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEblAgent>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Agent deleted successfully !',
+    message: 'ebl agent deleted successfully !',
     data: result,
   });
 });

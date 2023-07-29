@@ -17,7 +17,7 @@ const getAllEbl365 = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEbl365[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admins retrieved successfully !',
+    message: 'EBl365 booths retrieved successfully !',
     meta: result.meta,
     data: result.data,
   });
@@ -30,7 +30,7 @@ const getSingleEbl365 = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEbl365>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Ebl365 retrieved successfully !',
+    message: 'Ebl365 booth retrieved successfully !',
     data: result,
   });
 });
@@ -44,7 +44,7 @@ const updateEbl365 = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEbl365>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Ebl365 updated successfully !',
+    message: 'Ebl365 booth updated successfully !',
     data: result,
   });
 });
@@ -56,7 +56,7 @@ const deleteEbl365 = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEbl365>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Ebl365 deleted successfully !',
+    message: 'Ebl365 booth deleted successfully !',
     data: result,
   });
 });

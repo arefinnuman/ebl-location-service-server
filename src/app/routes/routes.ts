@@ -20,7 +20,7 @@ const moduleRoutes = [
     route: EblSubBranchRoutes,
   },
   {
-    path: '/ebl-agent',
+    path: '/ebl-agents',
     route: EblAgentRoutes,
   },
   {
