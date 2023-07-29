@@ -20,7 +20,7 @@ const getAllBranch = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IEblBranch[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Admins retrieved successfully !',
+    message: 'Branches retrieved successfully !',
     meta: result.meta,
     data: result.data,
   });
