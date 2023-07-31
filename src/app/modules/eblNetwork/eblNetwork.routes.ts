@@ -29,4 +29,6 @@ router.post(
   EblNetworkController.create365,
 );
 
+router.get('/', EblNetworkController.getAllNetworks);
+
 export const EblNetworkRoutes = router;

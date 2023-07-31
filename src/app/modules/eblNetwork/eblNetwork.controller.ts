@@ -59,9 +59,23 @@ const create365: RequestHandler = catchAsync(
   },
 );
 
+const getAllNetworks: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await EblNetworkService.getAllNetworks();
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: `All networks fetched successfully`,
+      data: result,
+    });
+  },
+);
+
 export const EblNetworkController = {
   createBranch,
   createSubBranch,
   createAgent,
   create365,
+  getAllNetworks,
 };

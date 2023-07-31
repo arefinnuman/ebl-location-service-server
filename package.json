@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only --exit-child --watch src src/server.ts",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "lint:fix": "eslint . --fix",
     "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "prettier:fix": "prettier --write .",
     "lint-prettier": "yarn lint:check && yarn prettier:check",
-    "dev": "ts-node-dev --respawn --transpile-only --exit-child --watch src src/server.ts"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
     "src/**/*.ts": "yarn lint-prettier"
@@ -28,8 +30,6 @@
     "http-status": "^1.6.2",
     "lint-staged": "^13.2.3",
     "mongoose": "^7.4.1",
-    "winston": "^3.10.0",
-    "winston-daily-rotate-file": "^4.7.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {

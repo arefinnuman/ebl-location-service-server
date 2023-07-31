@@ -10,3 +10,9 @@ export type IEblNetwork = {
 };
 
 export type EblNetworkModel = Model<IEblNetwork, Record<string, unknown>>;
+
+export type IEblNetworkFilters = {
+  searchTerm?: string;
+  id?: string;
+  type?: string;
+};

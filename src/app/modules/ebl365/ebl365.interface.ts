@@ -8,6 +8,9 @@ export type IEbl365 = {
   ebl365Division: string;
   ebl365Address: string;
   ebl365MapLink?: string;
+  // devices? : {
+  //   AtmBooths:
+  // }
   ebl365Location?: {
     lat: number;
     long: number;

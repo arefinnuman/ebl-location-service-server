@@ -106,7 +106,7 @@ const createAgent = async (
 
     const newAgent = await EblAgent.create([eblAgent], { session });
     if (!newAgent.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create customer');
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create agent');
     }
     network.eblAgent = newAgent[0]._id;
 
@@ -171,9 +171,19 @@ const create365 = async (
   return newData;
 };
 
+const getAllNetworks = async (): Promise<IEblNetwork[]> => {
+  const networks = await EblNetwork.find()
+    .populate('eblAgent')
+    .populate('eblBranch')
+    .populate('eblSubBranch')
+    .populate('ebl365');
+  return networks;
+};
+
 export const EblNetworkService = {
   createBranch,
   createSubBranch,
   createAgent,
   create365,
+  getAllNetworks,
 };
