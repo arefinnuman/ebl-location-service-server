@@ -65,11 +65,6 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
       type: String,
       required: true,
     },
-    team: {
-      type: Schema.Types.ObjectId,
-      ref: 'Team',
-      required: true,
-    },
     photo: {
       type: String,
     },

@@ -30,22 +30,16 @@ const userSchema = new Schema<IUser, UserModel>(
       type: Boolean,
       default: true,
     },
-    superAdmin: {
-      type: Schema.Types.ObjectId,
-      ref: 'SuperAdmin',
+    approvedByAdmin: {
+      type: Boolean,
+      default: false,
     },
+
     admin: {
       type: Schema.Types.ObjectId,
       ref: 'Admin',
     },
-    maker: {
-      type: Schema.Types.ObjectId,
-      ref: 'Maker',
-    },
-    checker: {
-      type: Schema.Types.ObjectId,
-      ref: 'Checker',
-    },
+
     viewer: {
       type: Schema.Types.ObjectId,
       ref: 'Viewer',

@@ -1,6 +1,5 @@
 import { Model, Types } from 'mongoose';
 import { IDepartment } from '../department/department.interface';
-import { ITeam } from '../team/team.interface';
 
 export type UserName = {
   firstName: string;
@@ -21,7 +20,6 @@ export type IAdmin = {
   permanentAddress: string;
   department: Types.ObjectId | IDepartment;
   designation: string;
-  team: Types.ObjectId | ITeam;
   photo?: string;
 };
 

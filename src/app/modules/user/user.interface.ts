@@ -6,11 +6,9 @@ export type IUser = {
   password: string;
   email: string;
   needsPasswordChange: true | false;
+  approvedByAdmin: true | false;
   role: string;
-  superAdmin?: Types.ObjectId;
   admin?: Types.ObjectId;
-  maker?: Types.ObjectId;
-  checker?: Types.ObjectId;
   viewer?: Types.ObjectId;
 };
 

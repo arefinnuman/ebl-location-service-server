@@ -65,17 +65,8 @@ const ViewerSchema = new Schema<IViewer, ViewerModel>(
       type: String,
       required: true,
     },
-    team: {
-      type: Schema.Types.ObjectId,
-      ref: 'Team',
-      required: true,
-    },
     photo: {
       type: String,
-    },
-    checkedByChecker: {
-      type: Boolean,
-      default: false,
     },
   },
   {

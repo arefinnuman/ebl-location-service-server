@@ -1,10 +1,11 @@
 import { SortOrder } from 'mongoose';
-import { IGenericResponse } from '../../../global/genericResponse';
-import { IPaginationOptions } from '../../../global/pagination';
-import { PaginationHelpers } from '../../../helpers/pagination';
+
+import { IGenericResponse } from '../../../interface/genericResponse';
+import { IPaginationOptions } from '../../../interface/pagination';
 import { departmentSearchableFields } from './department.constant';
 import { IDepartment, IDepartmentFilters } from './department.interface';
 import { Department } from './department.model';
+import { PaginationHelpers } from '../../../helper/paginationHelper';
 
 const createDepartment = async (payload: IDepartment): Promise<IDepartment> => {
   const result = await Department.create(payload);

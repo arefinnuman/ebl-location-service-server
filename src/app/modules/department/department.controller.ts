@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { paginationFields } from '../../../constants/pagination';
-import catchAsync from '../../../customs/catchAsync';
-import sendResponse from '../../../customs/sendResponse';
-import pick from '../../../global/pick';
+
 import { departmentFilterableFields } from './department.constant';
 import { IDepartment } from './department.interface';
 import { DepartmentService } from './department.service';
+import catchAsync from '../../../custom/catchAsync';
+import sendResponse from '../../../custom/sendResponse';
+import pick from '../../../interface/pick';
 
 const createDepartment = catchAsync(async (req: Request, res: Response) => {
   const { ...academicDepartmentData } = req.body;
