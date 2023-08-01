@@ -122,9 +122,6 @@ const getAllUsers = async (): Promise<IUser[]> => {
         {
           path: 'department',
         },
-        {
-          path: 'team',
-        },
       ],
     })
 
@@ -133,9 +130,6 @@ const getAllUsers = async (): Promise<IUser[]> => {
       populate: [
         {
           path: 'department',
-        },
-        {
-          path: 'team',
         },
       ],
     });

@@ -1,5 +1,6 @@
 import express from 'express';
 import { AdminRoutes } from '../modules/admin/admin.routes';
+import { AuthRoutes } from '../modules/auth/auth.routes';
 import { DepartmentRoutes } from '../modules/department/department.routes';
 import { EBl365Routes } from '../modules/ebl365/ebl365.routes';
 import { EblAgentRoutes } from '../modules/eblAgent/eblAgent.routes';
@@ -7,6 +8,7 @@ import { EblBranchRoutes } from '../modules/eblBranch/eblBranch.routes';
 import { EblNetworkRoutes } from '../modules/eblNetwork/eblNetwork.routes';
 import { EblSubBranchRoutes } from '../modules/eblSubBranch/eblSubBranch.routes';
 import { UserRoutes } from '../modules/user/user.routes';
+import { ViewerRoutes } from '../modules/viewer/viewer.routes';
 
 const routes = express.Router();
 const moduleRoutes = [
@@ -39,8 +41,16 @@ const moduleRoutes = [
     route: AdminRoutes,
   },
   {
+    path: '/viewers',
+    route: ViewerRoutes,
+  },
+  {
     path: '/departments',
     route: DepartmentRoutes,
+  },
+  {
+    path: '/auth',
+    route: AuthRoutes,
   },
 ];
 

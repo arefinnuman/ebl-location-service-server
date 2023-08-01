@@ -151,12 +151,6 @@ const createViewerZodSchema = z.object({
           required_error: 'Academic faculty is required',
         })
         .nonempty(),
-
-      team: z
-        .string({
-          required_error: 'Academic department is required',
-        })
-        .nonempty(),
     }),
   }),
 });

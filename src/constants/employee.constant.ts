@@ -8,7 +8,6 @@ export const employeeFilterableFields = [
   'alternateContactNo',
   'department',
   'designation',
-  'team',
 ];
 
 export const employeeSearchableFields = [

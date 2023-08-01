@@ -3,12 +3,12 @@ import httpStatus from 'http-status';
 import mongoose, { SortOrder } from 'mongoose';
 import { employeeSearchableFields } from '../../../constants/employee.constant';
 import ApiError from '../../../errors/apiError';
+import { PaginationHelpers } from '../../../helper/paginationHelper';
+import { IGenericResponse } from '../../../interface/genericResponse';
+import { IPaginationOptions } from '../../../interface/pagination';
 import { User } from '../user/user.model';
 import { IAdmin, IAdminFilters } from './admin.interface';
 import { Admin } from './admin.model';
-import { IPaginationOptions } from '../../../interface/pagination';
-import { IGenericResponse } from '../../../interface/genericResponse';
-import { PaginationHelpers } from '../../../helper/paginationHelper';
 
 const getAllAdmins = async (
   filters: IAdminFilters,
@@ -49,7 +49,7 @@ const getAllAdmins = async (
 
   const result = await Admin.find(whereConditions)
     .populate('department')
-    .populate('team')
+
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
@@ -72,9 +72,8 @@ const getSingleAdmin = async (employeeId: string): Promise<IAdmin | null> => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Admin not found !');
   }
 
-  const result = await Admin.findOne({ employeeId })
-    .populate('department')
-    .populate('team');
+  const result = await Admin.findOne({ employeeId }).populate('department');
+
   return result;
 };
 
