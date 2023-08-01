@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { paginationFields } from '../../../constants/paginationField';
 import catchAsync from '../../../custom/catchAsync';
 import sendResponse from '../../../custom/sendResponse';
 import pick from '../../../interface/pick';
-import { paginationFields } from '../../constants/paginationField';
 import { branchFilterableFields } from './eblBranch.constant';
 import { IEblBranch } from './eblBranch.interface';
 import { EblBranchService } from './eblBranch.service';
