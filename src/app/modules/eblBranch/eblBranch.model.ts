@@ -8,14 +8,10 @@ const EblBranchSchema = new Schema<IEblBranch, EblBranchModel>(
       required: true,
       unique: true,
     },
-    serialNo: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     branchName: {
       type: String,
       required: true,
+      unique: true,
     },
     branchCode: {
       type: String,
@@ -31,6 +27,10 @@ const EblBranchSchema = new Schema<IEblBranch, EblBranchModel>(
     branchMapLink: {
       type: String,
       required: true,
+      unique: true,
+    },
+    branchImage: {
+      type: String,
     },
     branchLocation: {
       lat: {
@@ -48,7 +48,6 @@ const EblBranchSchema = new Schema<IEblBranch, EblBranchModel>(
     },
   },
 );
-
 export const EblBranch = model<IEblBranch, EblBranchModel>(
   'EblBranch',
   EblBranchSchema,

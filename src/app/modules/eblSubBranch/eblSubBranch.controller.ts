@@ -8,6 +8,17 @@ import { subBranchFilterableFields } from './eblSubBranch.constant';
 import { IEblSubBranch } from './eblSubBranch.interface';
 import { EblSubBranchService } from './eblSubBranch.service';
 
+const createSubBranch = catchAsync(async (req: Request, res: Response) => {
+  const branchData = req.body;
+  const result = await EblSubBranchService.createSUBBranch(branchData);
+  sendResponse<IEblSubBranch>(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Branch created successfully !',
+    data: result,
+  });
+});
+
 const getAllSubBranch = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, subBranchFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
@@ -69,4 +80,5 @@ export const EblSubBranchController = {
   getSingleSubBranch,
   updateSubBranch,
   deleteSubBranch,
+  createSubBranch,
 };

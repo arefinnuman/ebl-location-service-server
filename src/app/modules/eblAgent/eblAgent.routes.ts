@@ -3,6 +3,8 @@ import { EblAgentController } from './eblAgent.controller';
 
 const router = express.Router();
 
+router.post('/', EblAgentController.createEblAgent);
+
 router.get('/', EblAgentController.getAllAgent);
 
 router.get('/:id', EblAgentController.getSingleAgent);

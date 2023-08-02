@@ -3,6 +3,8 @@ import { Ebl365Controller } from './ebl365.controller';
 
 const router = express.Router();
 
+router.post('/', Ebl365Controller.createEbl365);
+
 router.get('/', Ebl365Controller.getAllEbl365);
 
 router.get('/:id', Ebl365Controller.getSingleEbl365);

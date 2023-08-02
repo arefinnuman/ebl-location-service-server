@@ -2,7 +2,6 @@ import { Model } from 'mongoose';
 
 export type IEblAgent = {
   networkId: string;
-  serialNo: string;
   agentName: string;
   agentCode?: string;
   agentDivision: string;

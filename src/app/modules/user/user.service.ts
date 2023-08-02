@@ -1,143 +1,139 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
+import { SortOrder } from 'mongoose';
 import config from '../../../config/config';
+import { employeeSearchableFields } from '../../../constants/employee.constant';
 import ApiError from '../../../errors/apiError';
-import { IAdmin } from '../admin/admin.interface';
-import { Admin } from '../admin/admin.model';
-import { IUser } from '../user/user.interface';
+import { PaginationHelpers } from '../../../helper/paginationHelper';
+import { IGenericResponse } from '../../../interface/genericResponse';
+import { IPaginationOptions } from '../../../interface/pagination';
+import { IUser, IUserFilters } from '../user/user.interface';
 import { User } from '../user/user.model';
-import { IViewer } from '../viewer/viewer.interface';
-import { Viewer } from '../viewer/viewer.model';
 
-const createAdmin = async (
-  admin: IAdmin,
-  user: IUser,
-): Promise<IUser | null> => {
+const createAdmin = async (user: IUser): Promise<IUser | null> => {
   if (!user.password) {
     user.password = config.default_password.admin as string;
   }
-
+  user.employeeId = 'DB-' + user.employeeCardNumber;
   user.role = 'admin';
-  let newUserAllData = null;
-  const session = await mongoose.startSession();
-  try {
-    session.startTransaction();
-
-    admin.email = user.email;
-    admin.employeeId = user.employeeId;
-    const newAdmin = await Admin.create([admin], { session });
-
-    if (!newAdmin.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin');
-    }
-
-    user.admin = newAdmin[0]._id;
-    const newUser = await User.create([user], { session });
-    if (!newUser.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
-    }
-    newUserAllData = newUser[0];
-
-    await session.commitTransaction();
-    await session.endSession();
-  } catch (error) {
-    await session.abortTransaction();
-    await session.endSession();
-    throw error;
-  }
-  if (newUserAllData) {
-    newUserAllData = await User.findOne({
-      employeeId: newUserAllData.employeeId,
-    }).populate({
-      path: 'admin',
-      populate: [
-        {
-          path: 'department',
-        },
-      ],
-    });
-  }
-
-  return newUserAllData;
+  const newAdmin = await User.create(user);
+  return newAdmin;
 };
 
-const createViewer = async (
-  viewer: IViewer,
-  user: IUser,
-): Promise<IUser | null> => {
+const createViewer = async (user: IUser): Promise<IUser | null> => {
   if (!user.password) {
     user.password = config.default_password.admin as string;
   }
-
-  user.role = 'viewer';
-  let newUserAllData = null;
-  const session = await mongoose.startSession();
-  try {
-    session.startTransaction();
-
-    viewer.email = user.email;
-    viewer.employeeId = user.employeeId;
-    const newViewer = await Viewer.create([viewer], { session });
-
-    if (!newViewer.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create viewer');
-    }
-
-    user.viewer = newViewer[0]._id;
-    const newUser = await User.create([user], { session });
-    if (!newUser.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
-    }
-    newUserAllData = newUser[0];
-
-    await session.commitTransaction();
-    await session.endSession();
-  } catch (error) {
-    await session.abortTransaction();
-    await session.endSession();
-    throw error;
-  }
-
-  if (newUserAllData) {
-    newUserAllData = await User.findOne({
-      employeeId: newUserAllData.employeeId,
-    }).populate({
-      path: 'viewer',
-      populate: [
-        {
-          path: 'department',
-        },
-      ],
-    });
-  }
-
-  return newUserAllData;
+  user.employeeId = 'DB-' + user.employeeCardNumber;
+  const newUser = await User.create(user);
+  return newUser;
 };
 
-const getAllUsers = async (): Promise<IUser[]> => {
-  const users = await User.find()
-    .populate({
-      path: 'admin',
-      populate: [
-        {
-          path: 'department',
-        },
-      ],
-    })
+const getAllUser = async (
+  filters: IUserFilters,
+  paginationOptions: IPaginationOptions,
+): Promise<IGenericResponse<IUser[]>> => {
+  const { searchTerm, ...filtersData } = filters;
+  const { page, limit, skip, sortBy, sortOrder } =
+    PaginationHelpers.calculatePagination(paginationOptions);
 
-    .populate({
-      path: 'viewer',
-      populate: [
-        {
-          path: 'department',
+  const andConditions = [];
+
+  if (searchTerm) {
+    andConditions.push({
+      $or: employeeSearchableFields.map(field => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: 'i',
         },
-      ],
+      })),
     });
-  return users;
+  }
+
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
+
+  const sortConditions: { [key: string]: SortOrder } = {};
+
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+
+  const result = await User.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await User.countDocuments(whereConditions);
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
+
+const getSingleUser = async (employeeId: string): Promise<IUser | null> => {
+  const isExist = await User.findOne({ employeeId });
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+
+  const result = await User.findOne({ employeeId });
+  return result;
+};
+
+const updateUser = async (
+  employeeId: string,
+  payload: Partial<IUser>,
+): Promise<IUser | null> => {
+  const isExist = await User.findOne({ employeeId });
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+
+  const { fullName, ...UserData } = payload;
+  const updatedUserData: Partial<IUser> = { ...UserData };
+
+  if (fullName && Object.keys(fullName).length > 0) {
+    Object.keys(fullName).forEach(key => {
+      const nameKey = `fullName.${key}` as keyof Partial<IUser>;
+      (updatedUserData as any)[nameKey] =
+        fullName[key as keyof typeof fullName];
+    });
+  }
+
+  const result = await User.findOneAndUpdate({ employeeId }, updatedUserData, {
+    new: true,
+  });
+  return result;
+};
+
+const deleteUser = async (employeeId: string): Promise<IUser | null> => {
+  const isExist = await User.findOne({ employeeId });
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+
+  const result = await User.findOneAndDelete({ employeeId });
+  return result;
 };
 
 export const UserService = {
   createAdmin,
   createViewer,
-  getAllUsers,
+  getAllUser,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 };

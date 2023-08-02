@@ -8,11 +8,6 @@ const EblSubBranchSchema = new Schema<IEblSubBranch, EblSubBranchModel>(
       required: true,
       unique: true,
     },
-    serialNo: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     subBranchName: {
       type: String,
       required: true,

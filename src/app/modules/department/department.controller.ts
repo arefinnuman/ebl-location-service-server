@@ -18,7 +18,7 @@ const createDepartment = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: `Department Created Successfully`,
+    message: ` Created Successfully`,
     data: result,
   });
 });

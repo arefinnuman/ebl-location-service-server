@@ -1,13 +1,19 @@
 import httpStatus from 'http-status';
-import mongoose, { SortOrder } from 'mongoose';
+import { SortOrder } from 'mongoose';
+import { generateRandom4DigitNumber } from '../../../constants/constant.function';
 import ApiError from '../../../errors/apiError';
 import { PaginationHelpers } from '../../../helper/paginationHelper';
 import { IGenericResponse } from '../../../interface/genericResponse';
 import { IPaginationOptions } from '../../../interface/pagination';
-import { EblNetwork } from '../eblNetwork/eblNetwork.model';
 import { agentSearchableFields } from './eblAgent.constant';
 import { IAgentFilters, IEblAgent } from './eblAgent.interface';
 import { EblAgent } from './eblAgent.model';
+
+const createAgent = async (eblBranch: IEblAgent): Promise<IEblAgent | null> => {
+  eblBranch.networkId = generateRandom4DigitNumber();
+  const newBranch = await EblAgent.create(eblBranch);
+  return newBranch;
+};
 
 const getAllAgent = async (
   filters: IAgentFilters,
@@ -92,28 +98,11 @@ const updateAgent = async (
 const deleteAgent = async (id: string): Promise<IEblAgent | null> => {
   const isExist = await EblAgent.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Agent is not found !');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Agent outlet is not found !');
   }
-  const networkId = isExist?.networkId;
 
-  const session = await mongoose.startSession();
-  try {
-    session.startTransaction();
-
-    const Agent = await EblAgent.findOneAndDelete({ networkId });
-    if (!Agent) {
-      throw new ApiError(404, 'failed to delete Agent');
-    }
-
-    await EblNetwork.deleteOne({ networkId });
-    session.commitTransaction();
-    session.endSession();
-
-    return Agent;
-  } catch (error) {
-    session.abortTransaction();
-    throw error;
-  }
+  const result = await EblAgent.findByIdAndDelete(id, { new: true });
+  return result;
 };
 
 export const EblAgentService = {
@@ -121,4 +110,5 @@ export const EblAgentService = {
   getSingleAgent,
   updateAgent,
   deleteAgent,
+  createAgent,
 };

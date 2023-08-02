@@ -18,13 +18,70 @@ const userSchema = new Schema<IUser, UserModel>(
       required: true,
       unique: true,
     },
-    role: {
+    employeeCardNumber: {
       type: String,
       required: true,
+      unique: true,
+    },
+    role: {
+      type: String,
+      enum: ['admin', 'viewer'],
+      default: 'viewer',
     },
     password: {
       type: String,
       select: 0,
+    },
+    fullName: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+      middleName: {
+        type: String,
+      },
+    },
+    contactNo: {
+      type: String,
+      required: true,
+    },
+    alternativeContactNo: {
+      type: String,
+    },
+    dateOfBirth: {
+      type: String,
+      required: true,
+    },
+    bloodGroup: {
+      type: String,
+      enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    },
+    gender: {
+      type: String,
+      enum: ['male', 'female'],
+    },
+    presentAddress: {
+      type: String,
+      required: true,
+    },
+    permanentAddress: {
+      type: String,
+      required: true,
+    },
+    department: {
+      type: String,
+      enum: ['test-1', 'test-2'],
+    },
+    designation: {
+      type: String,
+      required: true,
+    },
+    photo: {
+      type: String,
     },
     needsPasswordChange: {
       type: Boolean,
@@ -33,16 +90,6 @@ const userSchema = new Schema<IUser, UserModel>(
     approvedByAdmin: {
       type: Boolean,
       default: false,
-    },
-
-    admin: {
-      type: Schema.Types.ObjectId,
-      ref: 'Admin',
-    },
-
-    viewer: {
-      type: Schema.Types.ObjectId,
-      ref: 'Viewer',
     },
   },
   {

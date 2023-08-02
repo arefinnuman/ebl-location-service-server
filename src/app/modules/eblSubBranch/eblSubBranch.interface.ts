@@ -2,7 +2,6 @@ import { Model } from 'mongoose';
 
 export type IEblSubBranch = {
   networkId: string;
-  serialNo: string;
   subBranchName: string;
   subBranchCode?: string;
   subBranchDivision: string;

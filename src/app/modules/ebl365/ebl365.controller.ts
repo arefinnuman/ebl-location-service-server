@@ -8,6 +8,18 @@ import { ebl365FilterableFields } from './ebl365.constant ';
 import { IEbl365 } from './ebl365.interface';
 import { Ebl365Service } from './ebl365.service';
 
+const createEbl365 = catchAsync(async (req: Request, res: Response) => {
+  const { ...data } = req.body;
+  const result = await Ebl365Service.createEbl365(data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: `Ebl 365 Created Successfully`,
+    data: result,
+  });
+});
+
 const getAllEbl365 = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ebl365FilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
@@ -66,4 +78,5 @@ export const Ebl365Controller = {
   getSingleEbl365,
   updateEbl365,
   deleteEbl365,
+  createEbl365,
 };

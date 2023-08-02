@@ -1,13 +1,21 @@
 import httpStatus from 'http-status';
-import mongoose, { SortOrder } from 'mongoose';
+import { SortOrder } from 'mongoose';
+import { generateRandom4DigitNumber } from '../../../constants/constant.function';
 import ApiError from '../../../errors/apiError';
 import { PaginationHelpers } from '../../../helper/paginationHelper';
 import { IGenericResponse } from '../../../interface/genericResponse';
 import { IPaginationOptions } from '../../../interface/pagination';
-import { EblNetwork } from '../eblNetwork/eblNetwork.model';
 import { branchSearchableFields } from './eblBranch.constant';
 import { IBranchFilters, IEblBranch } from './eblBranch.interface';
 import { EblBranch } from './eblBranch.model';
+
+const createBranch = async (
+  eblBranch: IEblBranch,
+): Promise<IEblBranch | null> => {
+  eblBranch.networkId = generateRandom4DigitNumber();
+  const newBranch = await EblBranch.create(eblBranch);
+  return newBranch;
+};
 
 const getAllBranch = async (
   filters: IBranchFilters,
@@ -76,8 +84,8 @@ const updateBranch = async (
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Branch not found !');
   }
-  const { ...BranchData } = payload;
-  const updatedBranchData: Partial<IEblBranch> = { ...BranchData };
+  const { ...branchData } = payload;
+  const updatedBranchData: Partial<IEblBranch> = { ...branchData };
 
   const result = await EblBranch.findOneAndUpdate(
     { _id: id },
@@ -94,29 +102,13 @@ const deleteBranch = async (id: string): Promise<IEblBranch | null> => {
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'branch is not found !');
   }
-  const networkId = isExist?.networkId;
 
-  const session = await mongoose.startSession();
-  try {
-    session.startTransaction();
-
-    const Branch = await EblBranch.findOneAndDelete({ networkId });
-    if (!Branch) {
-      throw new ApiError(404, 'failed to delete Branch');
-    }
-
-    await EblNetwork.deleteOne({ networkId });
-    session.commitTransaction();
-    session.endSession();
-
-    return Branch;
-  } catch (error) {
-    session.abortTransaction();
-    throw error;
-  }
+  const result = await EblBranch.findByIdAndDelete(id, { new: true });
+  return result;
 };
 
 export const EblBranchService = {
+  createBranch,
   getAllBranch,
   getSingleBranch,
   updateBranch,

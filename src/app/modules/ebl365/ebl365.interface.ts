@@ -2,7 +2,7 @@ import { Model } from 'mongoose';
 
 export type IEbl365 = {
   networkId: string;
-  serialNo: string;
+
   ebl365Name: string;
   ebl365Code?: string;
   ebl365Division: string;

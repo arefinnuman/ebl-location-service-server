@@ -8,14 +8,10 @@ const Ebl365Schema = new Schema<IEbl365, Ebl365Model>(
       required: true,
       unique: true,
     },
-    serialNo: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     ebl365Name: {
       type: String,
       required: true,
+      unique: true,
     },
     ebl365Code: {
       type: String,

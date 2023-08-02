@@ -1,13 +1,21 @@
 import httpStatus from 'http-status';
-import mongoose, { SortOrder } from 'mongoose';
+import { SortOrder } from 'mongoose';
+import { generateRandom4DigitNumber } from '../../../constants/constant.function';
 import ApiError from '../../../errors/apiError';
 import { PaginationHelpers } from '../../../helper/paginationHelper';
 import { IGenericResponse } from '../../../interface/genericResponse';
 import { IPaginationOptions } from '../../../interface/pagination';
-import { EblNetwork } from '../eblNetwork/eblNetwork.model';
 import { subBranchSearchableFields } from './eblSubBranch.constant';
 import { IEblSubBranch, ISubBranchFilters } from './eblSubBranch.interface';
 import { EblSubBranch } from './eblSubBranch.model';
+
+const createSUBBranch = async (
+  eblBranch: IEblSubBranch,
+): Promise<IEblSubBranch | null> => {
+  eblBranch.networkId = generateRandom4DigitNumber();
+  const newBranch = await EblSubBranch.create(eblBranch);
+  return newBranch;
+};
 
 const getAllSubBranch = async (
   filters: ISubBranchFilters,
@@ -96,29 +104,13 @@ const deleteSubBranch = async (id: string): Promise<IEblSubBranch | null> => {
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'branch is not found !');
   }
-  const networkId = isExist?.networkId;
 
-  const session = await mongoose.startSession();
-  try {
-    session.startTransaction();
-
-    const Branch = await EblSubBranch.findOneAndDelete({ networkId });
-    if (!Branch) {
-      throw new ApiError(404, 'failed to delete Branch');
-    }
-
-    await EblNetwork.deleteOne({ networkId });
-    session.commitTransaction();
-    session.endSession();
-
-    return Branch;
-  } catch (error) {
-    session.abortTransaction();
-    throw error;
-  }
+  const result = await EblSubBranch.findByIdAndDelete(id, { new: true });
+  return result;
 };
 
 export const EblSubBranchService = {
+  createSUBBranch,
   getAllSubBranch,
   getSingleSubBranch,
   updateSubBranch,

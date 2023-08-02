@@ -1,13 +1,19 @@
 import httpStatus from 'http-status';
-import mongoose, { SortOrder } from 'mongoose';
+import { SortOrder } from 'mongoose';
+import { generateRandom4DigitNumber } from '../../../constants/constant.function';
 import ApiError from '../../../errors/apiError';
 import { PaginationHelpers } from '../../../helper/paginationHelper';
 import { IGenericResponse } from '../../../interface/genericResponse';
 import { IPaginationOptions } from '../../../interface/pagination';
-import { EblNetwork } from '../eblNetwork/eblNetwork.model';
 import { ebl365SearchableFields } from './ebl365.constant ';
 import { IEbl365, IEbl365Filters } from './ebl365.interface';
 import { Ebl365 } from './ebl365.model';
+
+const createEbl365 = async (eblBranch: IEbl365): Promise<IEbl365 | null> => {
+  eblBranch.networkId = generateRandom4DigitNumber();
+  const newBranch = await Ebl365.create(eblBranch);
+  return newBranch;
+};
 
 const getAllEbl365 = async (
   filters: IEbl365Filters,
@@ -88,28 +94,10 @@ const updateEbl365 = async (
 const deleteEbl365 = async (id: string): Promise<IEbl365 | null> => {
   const isExist = await Ebl365.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Ebl365 is not found !');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Ebl 365 Booth is not found !');
   }
-  const networkId = isExist?.networkId;
-
-  const session = await mongoose.startSession();
-  try {
-    session.startTransaction();
-
-    const ebl365 = await Ebl365.findOneAndDelete({ networkId });
-    if (!ebl365) {
-      throw new ApiError(404, 'failed to delete Ebl365');
-    }
-
-    await EblNetwork.deleteOne({ networkId });
-    session.commitTransaction();
-    session.endSession();
-
-    return ebl365;
-  } catch (error) {
-    session.abortTransaction();
-    throw error;
-  }
+  const result = await Ebl365.findByIdAndDelete(id, { new: true });
+  return result;
 };
 
 export const Ebl365Service = {
@@ -117,4 +105,5 @@ export const Ebl365Service = {
   getSingleEbl365,
   updateEbl365,
   deleteEbl365,
+  createEbl365,
 };

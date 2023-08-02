@@ -8,11 +8,6 @@ const EblAgentSchema = new Schema<IEblAgent, EblAgentModel>(
       required: true,
       unique: true,
     },
-    serialNo: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     agentName: {
       type: String,
       required: true,

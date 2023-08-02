@@ -8,6 +8,17 @@ import { branchFilterableFields } from './eblBranch.constant';
 import { IEblBranch } from './eblBranch.interface';
 import { EblBranchService } from './eblBranch.service';
 
+const createBranch = catchAsync(async (req: Request, res: Response) => {
+  const branchData = req.body;
+  const result = await EblBranchService.createBranch(branchData);
+  sendResponse<IEblBranch>(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Branch created successfully !',
+    data: result,
+  });
+});
+
 const getAllBranch = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, branchFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
@@ -65,6 +76,7 @@ const deleteBranch = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const EblBranchController = {
+  createBranch,
   getAllBranch,
   getSingleBranch,
   updateBranch,

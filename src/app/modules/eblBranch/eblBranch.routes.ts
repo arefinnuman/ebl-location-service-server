@@ -3,6 +3,8 @@ import { EblBranchController } from './eblBranch.controller';
 
 const router = express.Router();
 
+router.post('/', EblBranchController.createBranch);
+
 router.get('/', EblBranchController.getAllBranch);
 
 router.get('/:id', EblBranchController.getSingleBranch);

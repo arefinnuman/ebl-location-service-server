@@ -8,6 +8,18 @@ import { agentFilterableFields } from './eblAgent.constant';
 import { IEblAgent } from './eblAgent.interface';
 import { EblAgentService } from './eblAgent.service';
 
+const createEblAgent = catchAsync(async (req: Request, res: Response) => {
+  const { ...data } = req.body;
+  const result = await EblAgentService.createAgent(data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: `Agent Created Successfully`,
+    data: result,
+  });
+});
+
 const getAllAgent = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, agentFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
@@ -66,4 +78,5 @@ export const EblAgentController = {
   getSingleAgent,
   updateAgent,
   deleteAgent,
+  createEblAgent,
 };
