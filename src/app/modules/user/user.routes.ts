@@ -6,13 +6,7 @@ import { UserValidation } from './user.validation';
 const router = express.Router();
 
 router.post(
-  '/create-admin',
-  validateRequest(UserValidation.createAdminZodSchema),
-  UserController.createAdmin,
-);
-
-router.post(
-  '/create-viewer',
+  '/',
   validateRequest(UserValidation.createViewerZodSchema),
   UserController.createViewer,
 );
