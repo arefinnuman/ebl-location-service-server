@@ -11,6 +11,7 @@ const EblAgentSchema = new Schema<IEblAgent, EblAgentModel>(
     agentName: {
       type: String,
       required: true,
+      unique: true,
     },
     agentCode: {
       type: String,
@@ -25,7 +26,6 @@ const EblAgentSchema = new Schema<IEblAgent, EblAgentModel>(
     },
     agentMapLink: {
       type: String,
-      required: true,
     },
     agentLocation: {
       lat: {

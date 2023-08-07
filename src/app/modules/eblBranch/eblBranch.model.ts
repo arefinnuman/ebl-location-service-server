@@ -26,8 +26,6 @@ const EblBranchSchema = new Schema<IEblBranch, EblBranchModel>(
     },
     branchMapLink: {
       type: String,
-      required: true,
-      unique: true,
     },
     branchImage: {
       type: String,
