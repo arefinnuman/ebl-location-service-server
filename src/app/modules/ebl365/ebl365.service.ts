@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import httpStatus from 'http-status';
 import { SortOrder } from 'mongoose';
 import { generateRandom4DigitNumber } from '../../../constants/constant.function';

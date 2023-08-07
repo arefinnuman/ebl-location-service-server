@@ -5,8 +5,6 @@ const Ebl365Schema = new Schema<IEbl365, Ebl365Model>(
   {
     networkId: {
       type: String,
-      required: true,
-      unique: true,
     },
     ebl365Name: {
       type: String,
@@ -24,17 +22,17 @@ const Ebl365Schema = new Schema<IEbl365, Ebl365Model>(
       type: String,
       required: true,
     },
+
     ebl365MapLink: {
       type: String,
+    },
+    lat: {
+      type: Number,
       required: true,
     },
-    ebl365Location: {
-      lat: {
-        type: Number,
-      },
-      long: {
-        type: Number,
-      },
+    long: {
+      type: Number,
+      required: true,
     },
   },
   {

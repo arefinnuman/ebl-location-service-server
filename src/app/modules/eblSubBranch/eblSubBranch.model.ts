@@ -25,7 +25,6 @@ const EblSubBranchSchema = new Schema<IEblSubBranch, EblSubBranchModel>(
     },
     subBranchMapLink: {
       type: String,
-      required: true,
     },
     subBranchLocation: {
       lat: {

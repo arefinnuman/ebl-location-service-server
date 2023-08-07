@@ -6,7 +6,7 @@ export type IEblSubBranch = {
   subBranchCode?: string;
   subBranchDivision: string;
   subBranchAddress: string;
-  subBranchMapLink: string;
+  subBranchMapLink?: string;
   subBranchLocation: {
     lat: number;
     long: number;
