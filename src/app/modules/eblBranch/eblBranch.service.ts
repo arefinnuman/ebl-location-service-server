@@ -84,6 +84,7 @@ const updateBranch = async (
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Branch not found !');
   }
+
   const { ...branchData } = payload;
   const updatedBranchData: Partial<IEblBranch> = { ...branchData };
 

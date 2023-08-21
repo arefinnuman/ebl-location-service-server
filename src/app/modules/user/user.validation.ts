@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { bloodGroup } from '../../../constants/bloodGroup';
-import { designation } from '../../../constants/designation';
 import { gender } from '../../../constants/gender';
 
 const createAdminZodSchema = z.object({
@@ -64,9 +63,7 @@ const createAdminZodSchema = z.object({
       })
       .optional(),
 
-    designation: z.enum([...designation] as [string, ...string[]], {
-      required_error: 'Designation is required',
-    }),
+    designation: z.string().optional(),
 
     department: z
       .string({
@@ -137,9 +134,7 @@ const createViewerZodSchema = z.object({
       })
       .optional(),
 
-    designation: z.enum([...designation] as [string, ...string[]], {
-      required_error: 'Designation is required',
-    }),
+    designation: z.string().optional(),
 
     department: z
       .string({

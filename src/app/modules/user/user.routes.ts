@@ -13,6 +13,14 @@ router.post(
 
 router.get('/', UserController.getAllUser);
 
+router.patch('/update-to-admin/:id', UserController.updateToAdmin);
+
+router.patch('/update-to-viewer/:id', UserController.updateToViewer);
+
+router.patch('/approved-by-admin/:id', UserController.approvedByAdmin);
+
+router.patch('/rejected-by-admin/:id', UserController.rejectedByAdmin);
+
 router.get('/:id', UserController.getSingleUser);
 
 router.patch(
@@ -22,5 +30,7 @@ router.patch(
 );
 
 router.delete('/:id', UserController.deleteUser);
+
+router.post('/create-user-by-admin', UserController.createUserByAdmin);
 
 export const UserRoutes = router;

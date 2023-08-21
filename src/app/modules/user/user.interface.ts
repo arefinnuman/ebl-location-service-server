@@ -21,7 +21,7 @@ export type IUser = {
   gender: 'male' | 'female';
   presentAddress: string;
   permanentAddress: string;
-  department: 'test-1' | 'test-2';
+  department: string;
   designation: string;
   photo?: string;
   needsPasswordChange: true | false;
@@ -40,6 +40,7 @@ export type UserModel = {
       | 'role'
       | 'needsPasswordChange'
       | 'approvedByAdmin'
+      | 'fullName'
     >
   >;
   isPasswordMatched(

@@ -74,7 +74,7 @@ const userSchema = new Schema<IUser, UserModel>(
     },
     department: {
       type: String,
-      enum: ['test-1', 'test-2'],
+      required: true,
     },
     designation: {
       type: String,
@@ -119,6 +119,7 @@ userSchema.statics.isUserExist = async function (
       role: 1,
       needsPasswordChange: 1,
       approvedByAdmin: 1,
+      fullName: 1,
     },
   );
 };

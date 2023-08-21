@@ -90,6 +90,69 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateToAdmin = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await UserService.updateToAdmin(id);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated to admin successfully !',
+    data: result,
+  });
+});
+
+const updateToViewer = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await UserService.updateToViewer(id);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated to viewer successfully !',
+    data: result,
+  });
+});
+
+const approvedByAdmin = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await UserService.approvedByAdmin(id);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User approved by admin successfully !',
+    data: result,
+  });
+});
+
+const rejectedByAdmin = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await UserService.rejectedByAdmin(id);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User rejected by admin successfully !',
+    data: result,
+  });
+});
+
+const createUserByAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { ...user } = req.body;
+  const result = await UserService.createUserByAdmin(user);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User created successfully !',
+    data: result,
+  });
+});
+
 export const UserController = {
   createAdmin,
   createViewer,
@@ -97,4 +160,9 @@ export const UserController = {
   getSingleUser,
   updateUser,
   deleteUser,
+  updateToAdmin,
+  updateToViewer,
+  approvedByAdmin,
+  rejectedByAdmin,
+  createUserByAdmin,
 };

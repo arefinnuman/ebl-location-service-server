@@ -25,15 +25,23 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
+  if (isUserExist.approvedByAdmin === false) {
+    throw new ApiError(
+      httpStatus.UNAUTHORIZED,
+      'You are not approved yet, Please wait a admin will approve you soon',
+    );
+  }
+
   const {
     employeeId: userId,
     role,
     needsPasswordChange,
     approvedByAdmin,
+    fullName,
   } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
-    { userId, role },
+    { userId, role, needsPasswordChange, approvedByAdmin, fullName },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string,
   );

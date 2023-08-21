@@ -22,9 +22,12 @@ const Ebl365Schema = new Schema<IEbl365, Ebl365Model>(
       type: String,
       required: true,
     },
-
     ebl365MapLink: {
       type: String,
+    },
+    deviceAvailability: {
+      type: String,
+      required: true,
     },
     lat: {
       type: Number,

@@ -129,6 +129,72 @@ const deleteUser = async (employeeId: string): Promise<IUser | null> => {
   return result;
 };
 
+const updateToAdmin = async (employeeId: string): Promise<IUser | null> => {
+  const user = await User.findOne({ employeeId });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+
+  const result = await User.findOneAndUpdate(
+    { employeeId },
+    { role: 'admin' },
+    {
+      new: true,
+    },
+  );
+  return result;
+};
+
+const updateToViewer = async (employeeId: string): Promise<IUser | null> => {
+  const user = await User.findOne({ employeeId });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+
+  const result = await User.findOneAndUpdate(
+    { employeeId },
+    { role: 'viewer' },
+    {
+      new: true,
+    },
+  );
+  return result;
+};
+
+const approvedByAdmin = async (employeeId: string): Promise<IUser | null> => {
+  const user = await User.findOne({ employeeId: employeeId });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+  const result = await User.findOneAndUpdate(
+    { employeeId },
+    { approvedByAdmin: true },
+    {
+      new: true,
+    },
+  );
+  return result;
+};
+
+const rejectedByAdmin = async (employeeId: string): Promise<IUser | null> => {
+  const user = await User.findOne({ employeeId });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+  const result = await User.findOneAndDelete({ employeeId });
+  return result;
+};
+
+const createUserByAdmin = async (user: IUser): Promise<IUser | null> => {
+  if (!user.password) {
+    user.password = config.default_password.admin as string;
+  }
+  user.employeeId = 'DB-' + user.employeeCardNumber;
+  user.approvedByAdmin = true;
+  const newUser = await User.create(user);
+  return newUser;
+};
+
 export const UserService = {
   createAdmin,
   createViewer,
@@ -136,4 +202,9 @@ export const UserService = {
   getSingleUser,
   updateUser,
   deleteUser,
+  updateToAdmin,
+  updateToViewer,
+  approvedByAdmin,
+  rejectedByAdmin,
+  createUserByAdmin,
 };
