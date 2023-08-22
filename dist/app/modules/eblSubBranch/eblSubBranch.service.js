@@ -25,12 +25,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EblSubBranchService = void 0;
 const http_status_1 = __importDefault(require("http-status"));
-const mongoose_1 = __importDefault(require("mongoose"));
+const constant_function_1 = require("../../../constants/constant.function");
 const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const paginationHelper_1 = require("../../../helper/paginationHelper");
-const eblNetwork_model_1 = require("../eblNetwork/eblNetwork.model");
 const eblSubBranch_constant_1 = require("./eblSubBranch.constant");
 const eblSubBranch_model_1 = require("./eblSubBranch.model");
+const createSUBBranch = (eblBranch) => __awaiter(void 0, void 0, void 0, function* () {
+    eblBranch.networkId = (0, constant_function_1.generateRandom4DigitNumber)();
+    const newBranch = yield eblSubBranch_model_1.EblSubBranch.create(eblBranch);
+    return newBranch;
+});
 const getAllSubBranch = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
     const { page, limit, skip, sortBy, sortOrder } = paginationHelper_1.PaginationHelpers.calculatePagination(paginationOptions);
@@ -92,25 +96,11 @@ const deleteSubBranch = (id) => __awaiter(void 0, void 0, void 0, function* () {
     if (!isExist) {
         throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'branch is not found !');
     }
-    const networkId = isExist === null || isExist === void 0 ? void 0 : isExist.networkId;
-    const session = yield mongoose_1.default.startSession();
-    try {
-        session.startTransaction();
-        const Branch = yield eblSubBranch_model_1.EblSubBranch.findOneAndDelete({ networkId });
-        if (!Branch) {
-            throw new apiError_1.default(404, 'failed to delete Branch');
-        }
-        yield eblNetwork_model_1.EblNetwork.deleteOne({ networkId });
-        session.commitTransaction();
-        session.endSession();
-        return Branch;
-    }
-    catch (error) {
-        session.abortTransaction();
-        throw error;
-    }
+    const result = yield eblSubBranch_model_1.EblSubBranch.findByIdAndDelete(id, { new: true });
+    return result;
 });
 exports.EblSubBranchService = {
+    createSUBBranch,
     getAllSubBranch,
     getSingleSubBranch,
     updateSubBranch,

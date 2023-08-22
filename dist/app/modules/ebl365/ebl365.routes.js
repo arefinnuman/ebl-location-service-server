@@ -7,6 +7,7 @@ exports.EBl365Routes = void 0;
 const express_1 = __importDefault(require("express"));
 const ebl365_controller_1 = require("./ebl365.controller");
 const router = express_1.default.Router();
+router.post('/', ebl365_controller_1.Ebl365Controller.createEbl365);
 router.get('/', ebl365_controller_1.Ebl365Controller.getAllEbl365);
 router.get('/:id', ebl365_controller_1.Ebl365Controller.getSingleEbl365);
 router.patch('/:id', ebl365_controller_1.Ebl365Controller.updateEbl365);

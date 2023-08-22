@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const validateRequest_1 = __importDefault(require("../../middleWares/validateRequest"));
+const user_controller_1 = require("./user.controller");
+const user_validation_1 = require("./user.validation");
+const router = express_1.default.Router();
+router.post('/', (0, validateRequest_1.default)(user_validation_1.UserValidation.createViewerZodSchema), user_controller_1.UserController.createViewer);
+router.get('/', user_controller_1.UserController.getAllUser);
+router.patch('/update-to-admin/:id', user_controller_1.UserController.updateToAdmin);
+router.patch('/update-to-viewer/:id', user_controller_1.UserController.updateToViewer);
+router.patch('/approved-by-admin/:id', user_controller_1.UserController.approvedByAdmin);
+router.patch('/rejected-by-admin/:id', user_controller_1.UserController.rejectedByAdmin);
+router.get('/:id', user_controller_1.UserController.getSingleUser);
+router.patch('/:id', (0, validateRequest_1.default)(user_validation_1.UserValidation.updateUserZodSchema), user_controller_1.UserController.updateUser);
+router.delete('/:id', user_controller_1.UserController.deleteUser);
+router.post('/create-user-by-admin', user_controller_1.UserController.createUserByAdmin);
+exports.UserRoutes = router;

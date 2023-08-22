@@ -14,12 +14,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EblSubBranchController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
+const paginationField_1 = require("../../../constants/paginationField");
 const catchAsync_1 = __importDefault(require("../../../custom/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../custom/sendResponse"));
 const pick_1 = __importDefault(require("../../../interface/pick"));
-const paginationField_1 = require("../../constants/paginationField");
 const eblSubBranch_constant_1 = require("./eblSubBranch.constant");
 const eblSubBranch_service_1 = require("./eblSubBranch.service");
+const createSubBranch = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const branchData = req.body;
+    const result = yield eblSubBranch_service_1.EblSubBranchService.createSUBBranch(branchData);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.CREATED,
+        success: true,
+        message: 'Branch created successfully !',
+        data: result,
+    });
+}));
 const getAllSubBranch = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, eblSubBranch_constant_1.subBranchFilterableFields);
     const paginationOptions = (0, pick_1.default)(req.query, paginationField_1.paginationFields);
@@ -68,4 +78,5 @@ exports.EblSubBranchController = {
     getSingleSubBranch,
     updateSubBranch,
     deleteSubBranch,
+    createSubBranch,
 };

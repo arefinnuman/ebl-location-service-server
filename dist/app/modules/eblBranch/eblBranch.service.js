@@ -25,12 +25,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EblBranchService = void 0;
 const http_status_1 = __importDefault(require("http-status"));
-const mongoose_1 = __importDefault(require("mongoose"));
+const constant_function_1 = require("../../../constants/constant.function");
 const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const paginationHelper_1 = require("../../../helper/paginationHelper");
-const eblNetwork_model_1 = require("../eblNetwork/eblNetwork.model");
 const eblBranch_constant_1 = require("./eblBranch.constant");
 const eblBranch_model_1 = require("./eblBranch.model");
+const createBranch = (eblBranch) => __awaiter(void 0, void 0, void 0, function* () {
+    eblBranch.networkId = (0, constant_function_1.generateRandom4DigitNumber)();
+    const newBranch = yield eblBranch_model_1.EblBranch.create(eblBranch);
+    return newBranch;
+});
 const getAllBranch = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
     const { page, limit, skip, sortBy, sortOrder } = paginationHelper_1.PaginationHelpers.calculatePagination(paginationOptions);
@@ -80,8 +84,8 @@ const updateBranch = (id, payload) => __awaiter(void 0, void 0, void 0, function
     if (!isExist) {
         throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'Branch not found !');
     }
-    const BranchData = __rest(payload, []);
-    const updatedBranchData = Object.assign({}, BranchData);
+    const branchData = __rest(payload, []);
+    const updatedBranchData = Object.assign({}, branchData);
     const result = yield eblBranch_model_1.EblBranch.findOneAndUpdate({ _id: id }, updatedBranchData, {
         new: true,
     });
@@ -92,25 +96,11 @@ const deleteBranch = (id) => __awaiter(void 0, void 0, void 0, function* () {
     if (!isExist) {
         throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'branch is not found !');
     }
-    const networkId = isExist === null || isExist === void 0 ? void 0 : isExist.networkId;
-    const session = yield mongoose_1.default.startSession();
-    try {
-        session.startTransaction();
-        const Branch = yield eblBranch_model_1.EblBranch.findOneAndDelete({ networkId });
-        if (!Branch) {
-            throw new apiError_1.default(404, 'failed to delete Branch');
-        }
-        yield eblNetwork_model_1.EblNetwork.deleteOne({ networkId });
-        session.commitTransaction();
-        session.endSession();
-        return Branch;
-    }
-    catch (error) {
-        session.abortTransaction();
-        throw error;
-    }
+    const result = yield eblBranch_model_1.EblBranch.findByIdAndDelete(id, { new: true });
+    return result;
 });
 exports.EblBranchService = {
+    createBranch,
     getAllBranch,
     getSingleBranch,
     updateBranch,

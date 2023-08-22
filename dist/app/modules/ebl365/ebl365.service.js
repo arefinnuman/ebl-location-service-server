@@ -24,13 +24,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ebl365Service = void 0;
+/* eslint-disable no-unused-vars */
 const http_status_1 = __importDefault(require("http-status"));
-const mongoose_1 = __importDefault(require("mongoose"));
+const constant_function_1 = require("../../../constants/constant.function");
 const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const paginationHelper_1 = require("../../../helper/paginationHelper");
-const eblNetwork_model_1 = require("../eblNetwork/eblNetwork.model");
 const ebl365_constant_1 = require("./ebl365.constant ");
 const ebl365_model_1 = require("./ebl365.model");
+const createEbl365 = (eblBranch) => __awaiter(void 0, void 0, void 0, function* () {
+    eblBranch.networkId = (0, constant_function_1.generateRandom4DigitNumber)();
+    const newBranch = yield ebl365_model_1.Ebl365.create(eblBranch);
+    return newBranch;
+});
 const getAllEbl365 = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
     const { page, limit, skip, sortBy, sortOrder } = paginationHelper_1.PaginationHelpers.calculatePagination(paginationOptions);
@@ -90,29 +95,15 @@ const updateEbl365 = (id, payload) => __awaiter(void 0, void 0, void 0, function
 const deleteEbl365 = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield ebl365_model_1.Ebl365.findOne({ _id: id });
     if (!isExist) {
-        throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'Ebl365 is not found !');
+        throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'Ebl 365 Booth is not found !');
     }
-    const networkId = isExist === null || isExist === void 0 ? void 0 : isExist.networkId;
-    const session = yield mongoose_1.default.startSession();
-    try {
-        session.startTransaction();
-        const ebl365 = yield ebl365_model_1.Ebl365.findOneAndDelete({ networkId });
-        if (!ebl365) {
-            throw new apiError_1.default(404, 'failed to delete Ebl365');
-        }
-        yield eblNetwork_model_1.EblNetwork.deleteOne({ networkId });
-        session.commitTransaction();
-        session.endSession();
-        return ebl365;
-    }
-    catch (error) {
-        session.abortTransaction();
-        throw error;
-    }
+    const result = yield ebl365_model_1.Ebl365.findByIdAndDelete(id, { new: true });
+    return result;
 });
 exports.Ebl365Service = {
     getAllEbl365,
     getSingleEbl365,
     updateEbl365,
     deleteEbl365,
+    createEbl365,
 };

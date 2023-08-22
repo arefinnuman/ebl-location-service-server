@@ -7,6 +7,7 @@ exports.EblAgentRoutes = void 0;
 const express_1 = __importDefault(require("express"));
 const eblAgent_controller_1 = require("./eblAgent.controller");
 const router = express_1.default.Router();
+router.post('/', eblAgent_controller_1.EblAgentController.createEblAgent);
 router.get('/', eblAgent_controller_1.EblAgentController.getAllAgent);
 router.get('/:id', eblAgent_controller_1.EblAgentController.getSingleAgent);
 router.patch('/:id', eblAgent_controller_1.EblAgentController.updateAgent);
